@@ -99,7 +99,7 @@ With these provisions, first we have to set DNS in Yudhistira as DNS Master.
 //include "/etc/bind/zones.rfc1918";
 
 // main arjuna
-zone "arjuna.d15.com" {
+zone "arjuna.i06.com" {
         type master;
         notify yes;
         also-notify { 192.231.2.3; };  // IP Werkudara sebagai slave
@@ -108,7 +108,7 @@ zone "arjuna.d15.com" {
 };
 
 // main abimanyu
-zone "abimanyu.d15.com" {
+zone "abimanyu.i06.com" {
         type master;
         notify yes;
         also-notify { 192.231.2.3; };  // IP Werkudara sebagai slave
@@ -179,7 +179,7 @@ $TTL    604800
 ;
 @       IN      NS      abimanyu.i06.com.
 @       IN      A       192.231.1.4       ; IP Abimanyu
-www     IN      CNAME   abimanyu.d15.com.
+www     IN      CNAME   abimanyu.i06.com.
 parikesit       IN      A       192.231.1.4       ; IP Abimanyu
 www.parikesit   IN      CNAME   parikesit.abimanyu.i06.com.
 ns1     IN      A       192.231.2.3       ; IP Werkudara
@@ -469,7 +469,7 @@ server {
 
         listen 8001;
 
-        root /var/www/arjuna.d15.com;
+        root /var/www/arjuna.i06.com;
 
         index index.php;
         server_name _;
@@ -611,7 +611,7 @@ so that every time you access the IP from Abimanyu it will automatically be redi
     ServerName 192.231.1.4
     Redirect permanent / http://www.abimanyu.i06.com/
     ServerAdmin webmaster@localhost
-    DocumentRoot /var/www/abimanyu.d15.com
+    DocumentRoot /var/www/abimanyu.i06.com
 
 </VirtualHost>
 ```
@@ -622,7 +622,7 @@ restart apache2
 $ service apache2 restart
 ```
 
-> _parikesit.abimanyu.d15.com_
+> _parikesit.abimanyu.i06.com_
 
 create a file at the location <code>/etc/apache2/sites-available/parikesit.abimanyu.i06.conf</code> then fill in the following:
 
@@ -640,7 +640,7 @@ create a file at the location <code>/etc/apache2/sites-available/parikesit.abima
 After that, we enable the script with the following command
 
 ```
-$ a2ensite /etc/apache2/sites-available/parikesit.abimanyu.d15.conf
+$ a2ensite /etc/apache2/sites-available/parikesit.abimanyu.i06.conf
 ```
 
 Then, we make it so that on the subdomain the /public folder can only do directory listing while the /secret folder cannot be accessed (403 Forbidden) by adding the following script in <code>/etc/apache2/sites-available/parikesit.abimanyu. i06.conf</code>
@@ -689,7 +689,7 @@ restart apache2
 $ service apache2 restart
 ```
 
-> _rjp.baratayuda.abimanyu.d15.com_
+> _rjp.baratayuda.abimanyu.i06.com_
 
 To create a configuration so that www.rjp.baratayuda.abimanyu.yyy.com can only be accessed via ports 14000 and 14400, we need to create the following script in <code>/etc/apache2/sites-available/rjp.baratayuda.abimanyu.i06 .com</code>
 
@@ -720,7 +720,7 @@ $ a2ensite /etc/apache2/sites-available/rjp.baratayuda.abimanyu.i06.conf
 After that, we need to create a file <code>/etc/apache2/.htpasswd</code> as a place to set the password and username with the following command
 
 ```
-$ htpasswd -bc /etc/apache2/.htpasswd Wayang baratayudad15
+$ htpasswd -bc /etc/apache2/.htpasswd Wayang baratayudai06
 ```
 
 then we enable the modules needed to be able to log in using the username and password with the following command
@@ -855,7 +855,7 @@ $exiftool abimanyu.png
 we try to download another file containing the substring "abimanyu"
 
 ```
-$ lynx parikesit.abimanyu.d15.com/public/images/not-abimanyu.png
+$ lynx parikesit.abimanyu.i06.com/public/images/not-abimanyu.png
 ```
 
 If you look at the following are the filen specifications:
@@ -922,7 +922,7 @@ a2ensite abimanyu.i06.conf
 a2ensite parikesit.i06.conf
 a2ensite rjp.baratayuda.abimanyu.i06.conf
 
-htpasswd -bc /etc/apache2/.htpasswd Wayang baratayudad15
+htpasswd -bc /etc/apache2/.htpasswd Wayang baratayudai06
 
 a2enmod authn_core authz_core authn_file authz_user rewrite
 
