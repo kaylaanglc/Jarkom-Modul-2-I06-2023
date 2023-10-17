@@ -1,4 +1,4 @@
-# **Jarkom Practicum Module 2 Group I06*
+# Jarkom Praktikum Modul 2 Group I06
 
 ### **Members of the group**
 
@@ -53,7 +53,7 @@ The network topology has been established in accordance with the provided instru
 
 > _Answer Question Number 1_
 
-![topologi](./assets/topologi.png)
+<img width="741" alt="Screenshot 2023-10-17 at 19 01 20" src="https://github.com/kaylaanglc/Jarkom-Modul-2-I06-2023/assets/116704203/e36ccf4b-728c-4b6f-bfc3-bf2a8d1f68ad">
 
 The following is a list of IPs for each node in the topology above
 
@@ -88,8 +88,6 @@ With these provisions, first we have to set DNS in Yudhistira as DNS Master.
 ### Setting DNS Master
 
 > _named.conf.local_ Yudhistira
-
-![namedconflocal-master](./assets/namedconflocal-master.png)
 
 ```bind
 //
@@ -145,8 +143,6 @@ In the BIND DNS server configuration file `named.conf.local`, we have setup seve
 After that, the zone BIND files for each zone are as follows.
 > _Arjuna Zone_
 
-![arjunazone](./assets/arjunazone.png)
-
 ```bind
 ;
 ; BIND data file for local loopback interface
@@ -168,8 +164,6 @@ www     IN      CNAME   arjuna.i06.com.
 In the first line, **NS (Name Server)** indicates that the authoritative server for this zone is `arjuna.i06.com`. Then, the **A (Address)** record associates the name **@ (root domain)** with the IP address `192.231.2.4`, possibly referring to this DNS server. Additionally, there is a **CNAME** record that associates `www with arjuna.i06.com`, so that when accessing `www.arjuna.i06.com`, it refers to `arjuna.i06.com`.
 
 > _Abimanyu Zone_
-
-![abimanyuzone](./assets/abimanyuzone.png)
 
 ```bind
 ;
@@ -197,8 +191,6 @@ The **NS (Name Server)** declaration indicates that the authoritative server for
 
 > _Reverse Abimanyu Zone_
 
-![reverseabimanyuzone](./assets/reverseabimanyuzone.png)
-
 ```bind
 ;
 ; BIND data file for local loopback interface
@@ -218,8 +210,6 @@ $TTL    604800
 The NS (Name Server) declaration connects this reverse zone to the server `abimanyu.i06.com`. Next, there is a **PTR** (Pointer) record that connects the IP address `192.231.1.4` with the domain name `abimanyu.i06.com`.
 
 So that the delegation of the subdomain `baratayuda.abimanyu.i06.com` can work, we have to change a few settings in `named.conf.options`
-
-![namedconfoptions-master](./assets/namedconfoptions-master.png)
 
 ```bind
 options {
@@ -255,8 +245,6 @@ Adding `allow-query{any;};` allows the DNS server to accept various types of DNS
 ### Setting DNS Slave
 
 > _named.conf.local_ Werkudara
-
-![namedconflocal-slave](./assets/namedconflocal-slave.png)
 
 ```bind
 //
@@ -301,8 +289,6 @@ After that, the zone BIND file for the Baratayuda delegation zone is as follows.
 
 > _Barayauda Zone Delegation_
 
-![baratayudazone](./assets/baratayudazone.png)
-
 ```bind
 ;
 ; BIND data file for local loopback interface
@@ -325,8 +311,6 @@ www.rjp IN      CNAME   rjp.baratayuda.abimanyu.i06.com. ; IP Abimanyu (rjp bara
 The **NS (Name Server)** declaration connects this zone to an authoritative server, namely `baratayuda.abimanyu.i06.com.` which points to the IP address `192.231.1.4`. Furthermore, record **A** associates the IP address `192.231.1.4` with the domain name `baratayuda.abimanyu.i06.com`. Then, there is a **CNAME** record which creates the alias `www` to refer to the zone `baratayuda.abimanyu.i06.com` and `rjp` which points to the IP address `192.231.1.4`. Finally, another **CNAME** record associates the alias `www.rjp` with the subdomain `rjp.baratayuda.abimanyu.i06.com` in the zone `baratayuda.abimanyu.i06.com`.
 
 So that the delegation of the subdomain `baratayuda.abimanyu.i06.com` can work, we have to change a few settings in `named.conf.options`
-![namedconfoptions-slave](./assets/namedconfoptions-slave.png)
-
 ```bind
 options {
         directory "/var/cache/bind";
@@ -374,7 +358,7 @@ service bind9 restart
 
 The following are the testing results from NakulaClient
 
-![nakula-ping](./assets/nakula-ping.png)
+<img width="531" alt="Screenshot 2023-10-17 at 19 41 34" src="https://github.com/kaylaanglc/Jarkom-Modul-2-I06-2023/assets/116704203/317e4403-0658-4326-bf6c-03c1bc3ed7ff">
 
 ## Setup-WebServer
 
@@ -389,8 +373,6 @@ The web server will be setup on ArjunaLoadBalancer, AbimanyuWebServer, Prabakusu
 First of all, we have to setup the nginx Load Balancer on the Arjuna node, which applies the **Round Robbin** algorithm in its load balancing.
 
 ### Load Balancer Setting
-
-![nginx-lbarjuna](./assets/nginx-lbarjuna.png)
 
 ```nginx
 # Round Robin
@@ -423,8 +405,6 @@ After the load balancer has been set, we will set the nginx for each worker.
 #### Abimanyu
 
 On the Abimanyu server, a file will be created in the `sites-available` directory named `arjuna` with the following configuration.
-
-![nginx-arjuna-abimanyu](./assets/nginx-arjuna-abimanyu.png)
 
 ```nginx
 server {
@@ -484,8 +464,6 @@ The nginx configuration on Prabakusuma and Wisanggeni will be the same as that o
 
 > Prabakusuma nginx configuration
 
-![nginx-arjuna-prabakusuma](./assets/nginx-arjuna-prabakusuma.png)
-
 ```nginx
 server {
 
@@ -517,8 +495,6 @@ location ~ /\.ht {
 
 >  Nginx Wisanggeni Configuration
 
-![nginx-arjuna-wisanggeni](./assets/nginx-arjuna-wisanggeni.png)
-
 ```nginx
 server {
 
@@ -547,12 +523,6 @@ location ~ /\.ht {
         access_log /var/log/nginx/jarkom_access.log;
 }
 ```
-
-The following are the results of testing with `lynx.arjuna.i06.com`
-
-![nakula-lynx-arjuna](./assets/nakula-lynx-arjuna.png)
-
-If you spam Lynx, the destination server will change. If you want to test success, you can turn off nginx on all worker servers other than the destination server you want to test.
 
 ## Settings-WebServer
 
@@ -779,7 +749,7 @@ $ lynx www.abimanyu.i06.com
 ```
 
 Results:
-<img src="assets/webserver/soal_11.png" />
+![soal_11](https://github.com/kaylaanglc/Jarkom-Modul-2-I06-2023/assets/116704203/37c6ffdf-9f5d-4722-bde0-3cee0a235ac0)
 
 12. www.abimanyu.yyy.com/home
 
@@ -788,7 +758,7 @@ $ lynx www.abimanyu.i06.com/home
 ```
 
 Results:
-<img src="assets/webserver/soal_11.png" />
+![soal_11](https://github.com/kaylaanglc/Jarkom-Modul-2-I06-2023/assets/116704203/a81d79c2-600a-4804-a9a3-8e36b6b17316)
 
 13. www.parikesit.abimanyu.yyy.com
 
@@ -797,7 +767,7 @@ $ lynx www.parikesit.abimanyu.yyy.com
 ```
 
 Results:
-<img src="assets/webserver/soal_13.png" />
+![soal_13](https://github.com/kaylaanglc/Jarkom-Modul-2-I06-2023/assets/116704203/dfab254c-0147-424c-bcc0-a391fd8c9120)
 
 14. The /public folder can only do directory listing while the /secret folder cannot be accessed (403 Forbidden)
 
@@ -806,7 +776,7 @@ $ lynx parikesit.abimanyu.i06.com/secret
 ```
 
 Results:
-<img src="assets/webserver/soal_14.png" />
+![soal_14](https://github.com/kaylaanglc/Jarkom-Modul-2-I06-2023/assets/116704203/3029079e-7d6a-4b94-8c11-f4254f05c888)
 
 15. Create a customized error page in the /error folder to replace the error code in Apache. The error codes that need to be changed are 404 Not Found and 403 Forbidden.
 
@@ -815,14 +785,11 @@ $ lynx parikesit.abimanyu.i06.com/secret
 ```
 
 Results:
-<img src="assets/webserver/soal_14.png" />
+![soal_14](https://github.com/kaylaanglc/Jarkom-Modul-2-I06-2023/assets/116704203/27cc632f-5d60-4157-b8c0-ab37859feca9)
 
 ```
 $ lynx parikesit.abimanyu.i06.com/testing
 ```
-
-Results:
-<img src="assets/webserver/not_found.png" />
 
 16. www.parikesit.abimanyu.yyy.com/public/js be
      www.parikesit.abimanyu.yyy.com/js
@@ -830,9 +797,6 @@ Results:
 ```
 $ lynx parikesit.abimanyu.i06.com/js
 ```
-
-Results:
-<img src="assets/webserver/js.png" />
 
 17. www.rjp.baratayuda.abimanyu.yyy.com can only be accessed via ports 14000 and 14400.
 
@@ -846,15 +810,9 @@ or
 $ lynx rjp.baratayuda.abimanyu.i06.com:14400
 ```
 
-Results:
-<img src="assets/webserver/js.png" />
-
 ```
 $ lynx rjp.baratayuda.abimanyu.i06.com:8900
 ```
-
-Results:
-<img src="assets/webserver/rjp_unavail.png" />
 
 18. create an authenticated username in the form of "Wayang" and password "baratayudayyy" with yyy being the group code
 
@@ -868,21 +826,11 @@ or
 $ lynx rjp.baratayuda.abimanyu.i06.com:14400
 ```
 
-Results:
-<img src="assets/webserver/username.png" />
-
-<img src="assets/webserver/password.png" />
-
-<img src="assets/webserver/rjp_baratayuda.png" />
-
 19. Make it so that every time you access the IP from Abimanyu it will automatically be redirected to www.abimanyu.yyy.com
 
 ```
 $ lynx 192.231.1.4
 ```
-
-Results:
-<img src="assets/webserver/soal_11.png" />
 
 20. Because the website www.parikesit.abimanyu.yyy.com is getting more and more visitors and lots of random images, change image requests that have the substring "abimanyu" to be directed to abimanyu.png.
 
@@ -904,8 +852,6 @@ If you look at the following are the filen specifications:
 $exiftool abimanyu.png
 ```
 
-<img src="assets/webserver/abimanyu_png.png">
-
 we try to download another file containing the substring "abimanyu"
 
 ```
@@ -917,8 +863,6 @@ If you look at the following are the filen specifications:
 ```
 $exiftool abimanyu.png
 ```
-
-<img src="assets/webserver/not_abimanyu_png.png">
 
 here we can see that even though the name is different, the specifications are exactly the same which means what is downloaded is the abimanyu.png file
 
